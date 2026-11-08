@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Entity Mapping</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/dark-mode.css">
+<link rel="stylesheet" href="../shared/notifications.css">
+  <link rel="stylesheet" href="../shared/upload-widget.css">
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="max-w-6xl">
+      <div class="flex items-center gap-3 mb-6">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <div>
+          <h1 class="text-2xl font-bold text-stone-900">Entity Mapping</h1>
+          <p class="text-sm text-stone-500">Standardize text values (company, outlet, SKU) using fuzzy matching rules.</p>
+        </div>
+      </div>
+
+      <div class="split-grid grid grid-cols-3 gap-6">
+        <div class="space-y-6">
+          <div class="card p-5">
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="font-semibold text-stone-900">Rules</h2>
+              <button id="newRuleBtn" class="btn-ghost">+ New Rule</button>
+            </div>
+            <div id="ruleList" class="space-y-2"></div>
+          </div>
+        </div>
+
+        <div class="col-span-2 space-y-6">
+          <div class="card p-6" id="ruleFormCard" style="display:none">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="font-semibold text-stone-900" id="formTitle">New Entity Rule</h2>
+              <button id="cancelFormBtn" class="text-xs text-stone-500 hover:text-stone-800">Cancel</button>
+            </div>
+            <form id="ruleForm" class="space-y-4">
+              <input type="hidden" id="ruleId" />
+              <div>
+                <label class="label">Rule name</label>
+                <input id="ruleName" required class="input" placeholder="e.g. ACI Logistics" />
+              </div>
+              <div>
+                <label class="label">Standard value (replace-to)</label>
+                <input id="ruleStd" required class="input" placeholder="e.g. ACI Logistics Limited" />
+              </div>
+              <div>
+                <label class="label">Keywords (comma-separated)</label>
+                <textarea id="ruleKeywords" required class="input" rows="3" placeholder="ACI, ACI Ltd, A.C.I. Logistics"></textarea>
+                <p class="text-xs text-stone-500 mt-1">These will be matched against your data.</p>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="label">Match type</label>
+                  <select id="ruleMatchType" class="input">
+                    <option value="fuzzy">Fuzzy (recommended)</option>
+                    <option value="exact">Exact match</option>
+                    <option value="contains">Contains</option>
+                    <option value="regex">Regex</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="label">Threshold (%): <span id="threshVal">80</span></label>
+                  <input id="ruleThreshold" type="range" min="50" max="100" value="80" class="w-full" />
+                </div>
+              </div>
+              <div>
+                <label class="label">Column hint (optional)</label>
+                <input id="ruleColumnHint" class="input" placeholder="e.g. Company Name" />
+              </div>
+              <button type="submit" class="btn-primary" id="saveRuleBtn">Save Rule</button>
+            </form>
+          </div>
+
+          <div class="card p-6">
+            <h2 class="font-semibold text-stone-900 mb-4">Test matching</h2>
+            <textarea id="testValues" class="input" rows="4" placeholder="Paste values (one per line)&#10;ACI&#10;aci logistics&#10;A.C.I."></textarea>
+            <button id="testBtn" class="btn-primary mt-3">Test</button>
+            <div id="testResult" class="mt-4"></div>
+          </div>
+
+          <div class="card p-6">
+            <h2 class="font-semibold text-stone-900 mb-4">Apply to dataset</h2>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="label">Dataset</label>
+                <select id="applyDataset" class="input"></select>
+              </div>
+              <div>
+                <label class="label">Column</label>
+                <select id="applyColumn" class="input" disabled></select>
+              </div>
+            </div>
+            <button id="applyBtn" class="btn-primary">Apply Mapping</button>
+            <div id="applyResult" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="entity.js"></script>
+<script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+<script src="../shared/notifications.js"></script>
+  <script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+

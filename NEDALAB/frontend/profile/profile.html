@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Profile</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="../shared/dark-mode.css">
+  <link rel="stylesheet" href="../shared/notifications.css">
+  <link rel="stylesheet" href="../shared/upload-widget.css">
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3 mb-6">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <div>
+          <h1 class="text-2xl font-bold text-stone-900">Profile</h1>
+          <p class="text-sm text-stone-500">Manage your account and security.</p>
+        </div>
+      </div>
+
+      <!-- Hero card -->
+      <div class="card p-6 mb-6">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold" style="background:#047857" id="avatar">–</div>
+          <div>
+            <h2 id="profileName" class="text-lg font-bold text-stone-900">—</h2>
+            <p id="profileEmail" class="text-sm text-stone-500">—</p>
+            <span id="profileRole" class="badge badge-emerald mt-2">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid grid grid-cols-4 gap-4 mb-6">
+        <div class="stat-card"><p class="stat-label">Datasets</p><p id="statDs" class="stat-value">—</p></div>
+        <div class="stat-card"><p class="stat-label">Models</p><p id="statModels" class="stat-value">—</p></div>
+        <div class="stat-card"><p class="stat-label">Workspaces</p><p id="statWs" class="stat-value">—</p></div>
+        <div class="stat-card"><p class="stat-label">Days Active</p><p id="statAge" class="stat-value">—</p></div>
+      </div>
+
+      <!-- Edit profile -->
+      <div class="card p-6 mb-6">
+        <h3 class="font-semibold text-stone-900 mb-4">Edit profile</h3>
+        <form id="profileForm" class="space-y-4">
+          <div>
+            <label class="label">Full name</label>
+            <input id="editName" required minlength="2" class="input" />
+          </div>
+          <div>
+            <label class="label">Email (read-only)</label>
+            <input id="editEmail" class="input" disabled style="background:#f5f5f4;color:#78716c" />
+          </div>
+          <button type="submit" class="btn-primary">Save changes</button>
+        </form>
+      </div>
+
+      <!-- Change password -->
+      <div class="card p-6">
+        <h3 class="font-semibold text-stone-900 mb-4">Change password</h3>
+        <form id="passwordForm" class="space-y-4">
+          <div>
+            <label class="label">Current password</label>
+            <input id="curPass" type="password" required class="input" />
+          </div>
+          <div>
+            <label class="label">New password</label>
+            <input id="newPass" type="password" required minlength="6" class="input" />
+          </div>
+          <div>
+            <label class="label">Confirm new password</label>
+            <input id="confirmPass" type="password" required minlength="6" class="input" />
+          </div>
+          <button type="submit" class="btn-primary">Update password</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="profile.js"></script>
+  <script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+  <script src="../shared/notifications.js"></script>
+  <script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,267 @@
+/* NEDA LAB — Dark Mode */
+body.dark {
+  background: #0b0d12 !important;
+  color: #f5f5f4 !important;
+}
+
+body.dark .app-sidebar,
+body.dark aside[style*="#f4f1ea"] {
+  background: #131620 !important;
+  border-color: #262932 !important;
+}
+
+body.dark .sidebar-link {
+  color: #d6d3d1 !important;
+}
+body.dark .sidebar-link:hover {
+  background: #1c2028 !important;
+}
+body.dark .sidebar-link.active {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+body.dark .card {
+  background: #181c24 !important;
+  border-color: #262932 !important;
+}
+body.dark .card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark .stat-card {
+  background: #181c24 !important;
+  border-color: #262932 !important;
+}
+
+body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5,
+body.dark .text-stone-900,
+body.dark .text-stone-800 {
+  color: #f5f5f4 !important;
+}
+body.dark .text-stone-700,
+body.dark .text-stone-600 {
+  color: #d6d3d1 !important;
+}
+body.dark .text-stone-500,
+body.dark .text-slate-500,
+body.dark .text-slate-400 {
+  color: #a8a29e !important;
+}
+
+body.dark .input,
+body.dark input:not([type="checkbox"]):not([type="radio"]),
+body.dark select,
+body.dark textarea {
+  background: #1c2028 !important;
+  border-color: #353a45 !important;
+  color: #f5f5f4 !important;
+}
+body.dark .input::placeholder,
+body.dark input::placeholder {
+  color: #78716c !important;
+}
+
+body.dark .btn-primary {
+  background: #10b981 !important;
+  color: #062017 !important;
+}
+body.dark .btn-primary:hover {
+  background: #059669 !important;
+}
+
+body.dark .btn-secondary {
+  background: #1c2028 !important;
+  border-color: #353a45 !important;
+  color: #f5f5f4 !important;
+}
+body.dark .btn-secondary:hover {
+  background: #262932 !important;
+}
+
+body.dark .btn-ghost {
+  color: #6ee7b7 !important;
+}
+body.dark .btn-ghost:hover {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+body.dark .data-table thead th {
+  background: #1c2028 !important;
+  border-color: #262932 !important;
+  color: #a8a29e !important;
+}
+body.dark .data-table tbody td {
+  color: #e7e5e4 !important;
+  border-bottom-color: #262932 !important;
+}
+body.dark .data-table tbody tr:hover {
+  background: #1c2028 !important;
+}
+
+body.dark .log-list li {
+  background: #1c2028 !important;
+  color: #e7e5e4 !important;
+}
+
+body.dark .badge-stone {
+  background: #262932 !important;
+  color: #d6d3d1 !important;
+}
+body.dark .badge-emerald {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #6ee7b7 !important;
+}
+body.dark .badge-amber {
+  background: rgba(251, 191, 36, 0.15) !important;
+  color: #fcd34d !important;
+}
+body.dark .badge-red {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #fca5a5 !important;
+}
+
+body.dark #dropZone,
+body.dark [style*="background:#faf8f3"] {
+  background: #14171e !important;
+  border-color: #353a45 !important;
+}
+
+body.dark .step-divider {
+  background: #262932 !important;
+}
+body.dark .step-num {
+  border-color: currentColor;
+}
+
+body.dark .preset-card {
+  background: #1c2028 !important;
+  border-color: #262932 !important;
+}
+body.dark .preset-card:hover {
+  border-color: #a8a29e !important;
+}
+body.dark .preset-card.active {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: #10b981 !important;
+}
+body.dark .preset-card .preset-title {
+  color: #f5f5f4 !important;
+}
+body.dark .preset-card .preset-desc {
+  color: #a8a29e !important;
+}
+
+body.dark .ba-card {
+  background: #181c24 !important;
+  border-color: #262932 !important;
+}
+body.dark .ba-card.after {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: #10b981 !important;
+}
+body.dark .ba-card .ba-title {
+  color: #a8a29e !important;
+}
+body.dark .ba-row {
+  color: #e7e5e4 !important;
+}
+
+body.dark [style*="border-color:#e7e5e4"] {
+  border-color: #262932 !important;
+}
+body.dark [style*="background:#f4f1ea"] {
+  background: #131620 !important;
+}
+
+body.dark .stat-label {
+  color: #a8a29e !important;
+}
+body.dark .stat-value {
+  color: #6ee7b7 !important;
+}
+
+/* Toggle button */
+.dark-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e7e5e4;
+  background: white;
+  color: #44403c;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.dark-toggle:hover {
+  background: #f5f5f4;
+}
+body.dark .dark-toggle {
+  background: #1c2028;
+  border-color: #353a45;
+  color: #f5f5f4;
+}
+body.dark .dark-toggle:hover {
+  background: #262932;
+}
+
+.dark-toggle.floating {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  width: auto;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ===== FIX: Inline emerald highlights in dark mode ===== */
+body.dark [style*="background:#ecfdf5"],
+body.dark [style*="background: #ecfdf5"] {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: #10b981 !important;
+}
+
+body.dark [style*="background:#fef3c7"],
+body.dark [style*="background: #fef3c7"] {
+  background: rgba(251, 191, 36, 0.12) !important;
+}
+
+body.dark [style*="background:#fee2e2"],
+body.dark [style*="background: #fee2e2"] {
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+body.dark [style*="background:#d1fae5"],
+body.dark [style*="background: #d1fae5"] {
+  background: rgba(16, 185, 129, 0.18) !important;
+}
+
+/* Force any light-stone-50 background to dark */
+body.dark [style*="background:#fafaf9"],
+body.dark [style*="background:#f9fafb"],
+body.dark [style*="background:#f5f5f4"] {
+  background: #181c24 !important;
+}
+
+/* Dark mode: tighten up best-model card */
+body.dark .fade-in[style*="background:#ecfdf5"] {
+  color: #f5f5f4 !important;
+}
+
+body.dark .fade-in[style*="background:#ecfdf5"] p,
+body.dark .fade-in[style*="background:#ecfdf5"] span {
+  color: #e7e5e4 !important;
+}
+
+body.dark .fade-in[style*="background:#ecfdf5"] .font-medium {
+  color: #f5f5f4 !important;
+}

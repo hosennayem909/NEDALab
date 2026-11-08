@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Data Quality</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/dark-mode.css">
+<link rel="stylesheet" href="../shared/notifications.css">
+<link rel="stylesheet" href="../shared/upload-widget.css">
+<style>
+.q-tab { padding:8px 16px; border-radius:6px; font-size:13px; font-weight:500;
+  cursor:pointer; background:white; border:1px solid #e7e5e4; color:#57534e; }
+.q-tab.active { background:#047857; color:white; border-color:#047857; }
+body.dark .q-tab { background:#1c2028; border-color:#353a45; color:#d6d3d1; }
+body.dark .q-tab.active { background:#10b981; color:#062017; border-color:#10b981; }
+.health-ring {
+  width: 140px; height: 140px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; font-weight: 700; color: white; margin: 0 auto;
+}
+.health-A { background: linear-gradient(135deg, #047857, #10b981); }
+.health-B { background: linear-gradient(135deg, #65a30d, #84cc16); }
+.health-C { background: linear-gradient(135deg, #ca8a04, #eab308); }
+.health-D { background: linear-gradient(135deg, #c2410c, #f97316); }
+.health-F { background: linear-gradient(135deg, #991b1b, #dc2626); }
+.severity-high { background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.severity-medium { background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.severity-low { background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+body.dark .severity-high { background: rgba(239,68,68,0.2); color: #fca5a5; }
+body.dark .severity-medium { background: rgba(251,191,36,0.2); color: #fcd34d; }
+body.dark .severity-low { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="page-shell">
+      <div class="page-header">
+        <div class="page-header-copy">
+          <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+          <div>
+            <h1>Data Quality Studio</h1>
+            <p class="page-subtitle">Health check · Advanced imputation · Word export.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <button class="q-tab active" data-tab="report">✅ Quality Report</button>
+        <button class="q-tab" data-tab="impute">🩹 Advanced Imputation</button>
+      </div>
+
+      <div id="tabContent"></div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="quality.js"></script>
+<script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+<script src="../shared/notifications.js"></script>
+<script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Feature Engineering</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/dark-mode.css">
+<link rel="stylesheet" href="../shared/notifications.css">
+<link rel="stylesheet" href="../shared/upload-widget.css">
+<style>
+.fe-module {
+  border: 1px solid #e7e5e4; border-radius: 8px; overflow: hidden;
+  transition: all 0.15s ease;
+}
+.fe-module:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.fe-module.enabled { border-color: #047857; }
+.fe-module-header {
+  padding: 12px 16px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #fafaf9;
+}
+.fe-module.enabled .fe-module-header { background: #ecfdf5; }
+body.dark .fe-module { border-color: #262932; }
+body.dark .fe-module.enabled { border-color: #10b981; }
+body.dark .fe-module-header { background: #1c2028; }
+body.dark .fe-module.enabled .fe-module-header { background: rgba(16,185,129,0.15); }
+.fe-module-title { font-weight: 600; font-size: 14px; color: #1c1917; }
+body.dark .fe-module-title { color: #f5f5f4; }
+.fe-module-body { padding: 16px; display: none; }
+.fe-module.enabled .fe-module-body { display: block; }
+.chip {
+  display: inline-block; padding: 4px 10px; border-radius: 6px;
+  background: #f4f1ea; border: 1px solid #e7e5e4; font-size: 12px;
+  margin: 3px; cursor: pointer; font-family: 'IBM Plex Mono', monospace;
+  transition: all 0.12s;
+}
+.chip:hover { border-color: #047857; }
+.chip.selected { background: #ecfdf5; border-color: #047857; color: #047857; }
+body.dark .chip { background: #1c2028; border-color: #353a45; color: #d6d3d1; }
+body.dark .chip.selected { background: rgba(16,185,129,0.2); border-color: #10b981; color: #6ee7b7; }
+.chip-container {
+  border: 1px solid #e7e5e4; border-radius: 6px; padding: 6px;
+  max-height: 140px; overflow-y: auto;
+}
+body.dark .chip-container { border-color: #262932; }
+.toggle-switch {
+  width: 36px; height: 20px; border-radius: 999px; background: #d6d3d1;
+  position: relative; cursor: pointer; transition: background 0.15s;
+}
+.toggle-switch.on { background: #047857; }
+.toggle-switch::after {
+  content: ''; position: absolute; width: 16px; height: 16px;
+  background: white; border-radius: 50%; top: 2px; left: 2px;
+  transition: transform 0.15s;
+}
+.toggle-switch.on::after { transform: translateX(16px); }
+.fe-module-controls {
+  display: flex; align-items: center; gap: 6px; margin-right: 8px;
+}
+.fe-order-btn {
+  width: 22px; height: 22px; border: 1px solid #d6d3d1; border-radius: 6px;
+  background: #fff; color: #44403c; font-size: 12px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.12s ease;
+}
+.fe-order-btn:hover {
+  border-color: #047857; color: #047857; background: #ecfdf5;
+}
+body.dark .fe-order-btn {
+  background: #1c2028; border-color: #353a45; color: #e7e5e4;
+}
+body.dark .fe-order-btn:hover {
+  border-color: #10b981; color: #6ee7b7; background: rgba(16,185,129,0.12);
+}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="max-w-6xl">
+      <div class="flex items-center gap-3 mb-6">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <div>
+          <h1 class="text-2xl font-bold text-stone-900">Feature Engineering Hub</h1>
+          <p class="text-sm text-stone-500">Create lag, rolling, interaction, polynomial, date, binning, one-hot features.</p>
+        </div>
+      </div>
+
+      <div class="card p-5 mb-6">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="col-span-2">
+            <label class="label">Dataset</label>
+            <select id="dsSelect" class="input"><option value="">Loading...</option></select>
+          </div>
+          <div class="flex items-end">
+            <button id="autoSuggestBtn" class="btn-secondary w-full" disabled>✨ Auto-suggest</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modulesArea" style="display:none">
+        <div id="modulesList" class="space-y-3 mb-6"></div>
+
+        <div class="flex gap-3 mb-6">
+          <button id="previewBtn" class="btn-primary">👁 Preview</button>
+          <button id="applyBtn" class="btn-secondary">💾 Apply & Save as New Dataset</button>
+        </div>
+      </div>
+
+      <div id="loading" style="display:none" class="card p-8 text-center">
+        <span class="spinner"></span>
+        <p class="text-sm text-stone-600 mt-2">Processing...</p>
+      </div>
+
+      <div id="result"></div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="feature-eng.js"></script>
+<script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+<script src="../shared/notifications.js"></script>
+<script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+

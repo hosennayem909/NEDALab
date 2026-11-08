@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Create account</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="../shared/dark-mode.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+  <a href="../index.html" class="absolute top-6 left-6 text-sm text-stone-500 hover:text-stone-800 flex items-center gap-1">← Home</a>
+  <div class="w-full max-w-md card p-8 fade-in" style="box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+    <div class="brand-lockup mb-6" aria-label="NEDALab brand">
+      <span class="brand-mark">N</span>
+      <span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span>
+    </div>
+    <h1 class="text-xl font-bold mb-1 text-stone-900">Create account</h1>
+    <p class="text-sm text-stone-500 mb-6">Join the research platform</p>
+
+    <form id="registerForm" class="space-y-4">
+      <div>
+        <label class="label">Full name</label>
+        <input id="name" required minlength="2" class="input" />
+      </div>
+      <div>
+        <label class="label">Email</label>
+        <input id="email" type="email" required class="input" />
+      </div>
+      <div>
+        <label class="label">Password</label>
+        <input id="password" type="password" minlength="6" required class="input" />
+      </div>
+      <div>
+        <label class="label">Role</label>
+        <select id="role" class="input">
+          <option value="viewer">Viewer</option>
+          <option value="researcher" selected>Researcher</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" id="submitBtn" class="btn-primary w-full">Create account</button>
+    </form>
+
+    <p class="text-sm text-stone-500 mt-6 text-center border-t border-stone-200 pt-6">
+      Already have an account?
+      <a href="../login/login.html" class="font-medium" style="color:#047857">Sign in</a>
+    </p>
+  </div>
+
+  <script src="../shared/api.js"></script>
+  <script src="../shared/auth.js"></script>
+  <script src="../shared/ui.js"></script>
+  <script src="register.js"></script>
+  <script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+</body>
+</html>

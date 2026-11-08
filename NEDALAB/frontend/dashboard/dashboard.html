@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>NEDA LAB — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/dark-mode.css">
+  <link rel="stylesheet" href="../shared/notifications.css">
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="page-shell">
+      <div class="page-header">
+        <div class="page-header-copy">
+          <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+          <div>
+            <h1>Dashboard</h1>
+            <p class="page-subtitle">Upload datasets, review cleaning stats, start forecasts.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="mb-6" aria-labelledby="executiveOverviewTitle">
+        <div class="flex justify-between items-end gap-3 flex-wrap mb-3">
+          <div>
+            <h2 id="executiveOverviewTitle" class="text-lg font-semibold text-stone-900">Executive overview</h2>
+            <p class="text-xs text-stone-500">Current portfolio snapshot</p>
+          </div>
+          <p id="overviewUpdatedAt" class="text-xs text-stone-500" aria-live="polite">Loading metrics...</p>
+        </div>
+        <div class="stat-grid executive-kpi-grid grid grid-cols-4 gap-4">
+          <article class="stat-card executive-kpi" data-tone="green">
+            <p class="stat-label">Datasets</p>
+            <p id="statDs" class="stat-value">—</p>
+            <p id="statDsMeta" class="kpi-meta">Loading...</p>
+          </article>
+          <article class="stat-card executive-kpi" data-tone="blue">
+            <p class="stat-label">Data rows</p>
+            <p id="statRows" class="stat-value">—</p>
+            <p id="statRowsMeta" class="kpi-meta">Across all datasets</p>
+          </article>
+          <article class="stat-card executive-kpi" data-tone="amber">
+            <p class="stat-label">Forecast models</p>
+            <p id="statModels" class="stat-value">—</p>
+            <p id="statModelsMeta" class="kpi-meta">Saved models</p>
+          </article>
+          <article class="stat-card executive-kpi" data-tone="slate">
+            <p class="stat-label">Workspaces</p>
+            <p id="statWs" class="stat-value">—</p>
+            <p id="statWsMeta" class="kpi-meta">Accessible team spaces</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS (MOVED UP) ============ -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="card p-6">
+          <h2 class="font-semibold text-stone-900 mb-4">Monthly activity</h2>
+          <div style="height:200px"><canvas id="activityChart"></canvas></div>
+        </div>
+        <div class="card p-6">
+          <h2 class="font-semibold text-stone-900 mb-4">Model distribution</h2>
+          <div style="height:200px"><canvas id="distributionChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-6">
+        <h2 class="font-semibold text-stone-900 mb-4">Dataset growth</h2>
+        <div style="height:170px"><canvas id="growthChart"></canvas></div>
+      </div>
+
+      <section id="customerInsights" class="customer-insights mb-8" aria-labelledby="customerInsightsTitle">
+        <div class="flex justify-between items-end gap-3 flex-wrap mb-4">
+          <div>
+            <p class="text-xs font-semibold uppercase text-emerald-700">Customer intelligence</p>
+            <h2 id="customerInsightsTitle" class="text-xl font-semibold text-stone-900">Cohort analysis + RFM</h2>
+            <p class="text-sm text-stone-500 mt-1">Measure repeat purchasing and segment customers from a saved transaction dataset.</p>
+          </div>
+          <p id="customerAnalysisStatus" class="text-xs text-stone-500" role="status">Select a dataset to map its fields.</p>
+        </div>
+
+        <div class="customer-analysis-controls mb-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="lg:col-span-2">
+              <label class="label" for="customerDatasetSelect">Existing dataset</label>
+              <select id="customerDatasetSelect" class="input"><option value="">Loading datasets...</option></select>
+            </div>
+            <div>
+              <label class="label" for="customerIdColumn">Customer ID</label>
+              <select id="customerIdColumn" class="input" disabled><option value="">Select dataset first</option></select>
+            </div>
+            <div>
+              <label class="label" for="customerDateColumn">Purchase date</label>
+              <select id="customerDateColumn" class="input" disabled><option value="">Select dataset first</option></select>
+            </div>
+            <div>
+              <label class="label" for="customerMonetaryColumn">Sales / amount</label>
+              <select id="customerMonetaryColumn" class="input" disabled><option value="">Select dataset first</option></select>
+            </div>
+            <div>
+              <label class="label" for="customerTransactionColumn">Invoice / order ID <span class="font-normal text-stone-500">(optional)</span></label>
+              <select id="customerTransactionColumn" class="input" disabled><option value="">Each row is a transaction</option></select>
+            </div>
+            <div class="flex items-end">
+              <button id="runCustomerAnalysisBtn" class="btn-primary w-full" disabled>Run analysis</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="customerAnalysisResults" hidden></div>
+      </section>
+
+      <!-- ============ UPLOAD WIZARD + DATASETS ============ -->
+      <div class="split-grid grid grid-cols-3 gap-6">
+
+        <div class="space-y-4">
+          <div class="step-indicator">
+            <div class="step active" id="step1"><span class="step-num">1</span> File</div>
+            <div class="step-divider"></div>
+            <div class="step" id="step2"><span class="step-num">2</span> Clean</div>
+            <div class="step-divider"></div>
+            <div class="step" id="step3"><span class="step-num">3</span> Save</div>
+          </div>
+
+          <div class="card p-6" id="uploadStep">
+            <h2 class="font-semibold text-stone-900 mb-4">Choose file</h2>
+            <label for="fileInput" id="dropZone" class="block border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition" style="border-color:#d6d3d1;background:#faf8f3">
+              <p class="font-medium text-stone-700">📁 Drop CSV / Excel here</p>
+              <p class="text-xs text-stone-500 mt-1">or click to browse</p>
+              <p id="fileName" class="text-sm mt-3 hidden font-medium" style="color:#047857"></p>
+            </label>
+            <input id="fileInput" type="file" accept=".csv,.xlsx,.xls" class="hidden" />
+            <div class="flex gap-2 mt-4">
+              <button id="proceedBtn" class="btn-primary flex-1" disabled>Continue →</button>
+              <button id="resetBtn" class="btn-secondary hidden">Cancel</button>
+            </div>
+          </div>
+
+          <div class="card p-6" id="cleaningStep" style="display:none">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="font-semibold text-stone-900">Cleaning options</h2>
+              <button id="backToFile" class="text-xs text-stone-500 hover:text-stone-800">← Change file</button>
+            </div>
+            <label class="label">Preset</label>
+            <div class="preset-grid">
+              <div class="preset-card" data-preset="minimal"><p class="preset-title">Minimal</p><p class="preset-desc">Trim only</p></div>
+              <div class="preset-card active" data-preset="standard"><p class="preset-title">Standard</p><p class="preset-desc">Smart fill</p></div>
+              <div class="preset-card" data-preset="aggressive"><p class="preset-title">Aggressive</p><p class="preset-desc">+outliers</p></div>
+              <div class="preset-card" data-preset="custom"><p class="preset-title">Custom</p><p class="preset-desc">Configure</p></div>
+            </div>
+            <div id="advancedOptions" class="advanced-options" style="display:none">
+              <div>
+                <label class="label">Duplicates</label>
+                <select id="optDuplicates" class="input">
+                  <option value="keep">Keep all</option>
+                  <option value="drop_all" selected>Drop all duplicates</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">Missing values</label>
+                <select id="optMissing" class="input">
+                  <option value="keep">Keep as-is</option>
+                  <option value="drop_rows">Drop rows</option>
+                  <option value="drop_columns">Drop columns</option>
+                  <option value="auto" selected>Smart (mean/mode)</option>
+                  <option value="mean">Fill with mean</option>
+                  <option value="median">Fill with median</option>
+                  <option value="mode">Fill with mode</option>
+                  <option value="zero">Fill with zero</option>
+                  <option value="ffill">Forward fill</option>
+                  <option value="bfill">Backward fill</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">Outliers</label>
+                <select id="optOutliers" class="input">
+                  <option value="keep" selected>Keep all</option>
+                  <option value="iqr">Remove (IQR)</option>
+                  <option value="zscore">Remove (Z-score)</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">Text strings</label>
+                <select id="optStrings" class="input">
+                  <option value="keep">Keep as-is</option>
+                  <option value="trim" selected>Trim whitespace</option>
+                  <option value="trim_lower">Trim + lowercase</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button id="previewBtn" class="btn-primary flex-1">Preview cleaning</button>
+            </div>
+          </div>
+
+          <div class="card p-6" id="previewStep" style="display:none">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="font-semibold text-stone-900">Preview result</h2>
+              <button id="backToClean" class="text-xs text-stone-500 hover:text-stone-800">← Edit options</button>
+            </div>
+            <div class="before-after" id="beforeAfter"></div>
+            <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Cleaning log</h3>
+            <ul class="log-list mb-4" id="cleaningLog"></ul>
+            <div class="flex gap-2">
+              <button id="saveBtn" class="btn-primary flex-1">Save dataset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ DATASETS WITH SEARCH/FILTER ============ -->
+        <details id="datasetLibrary" class="dataset-library col-span-2 card">
+          <summary class="dataset-library-summary">
+            <span class="dataset-library-title">Dataset Library</span>
+            <span id="resultCount" class="text-xs text-stone-500"></span>
+            <span class="dataset-library-chevron" aria-hidden="true"></span>
+          </summary>
+
+          <div class="dataset-library-content">
+            <!-- Search + Filter bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+              <div class="sm:col-span-2 relative">
+                <input id="searchInput" type="text" class="input" placeholder="🔍 Search datasets by name..." />
+              </div>
+              <select id="statusFilter" class="input">
+                <option value="all">All statuses</option>
+                <option value="processed">Processed only</option>
+                <option value="aggregated">Aggregated only</option>
+              </select>
+            </div>
+
+            <div class="flex justify-between items-center mb-3">
+              <select id="sortSelect" class="input" style="width:auto">
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="name">Name (A–Z)</option>
+                <option value="rows_desc">Most rows</option>
+                <option value="rows_asc">Fewest rows</option>
+              </select>
+              <button id="clearFilters" class="btn-ghost hidden">✕ Clear filters</button>
+            </div>
+
+            <div id="datasetList" class="space-y-2"></div>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<dialog id="deleteDatasetDialog" class="delete-dialog" aria-labelledby="deleteDialogTitle" aria-describedby="deleteDialogDescription">
+  <div class="delete-dialog-content">
+    <span class="delete-dialog-icon" aria-hidden="true">!</span>
+    <div>
+      <h2 id="deleteDialogTitle">Delete dataset?</h2>
+      <p id="deleteDialogDescription" class="delete-dialog-description">This permanently removes the dataset and its stored file. This action cannot be undone.</p>
+    </div>
+  </div>
+  <div class="delete-dataset-summary">
+    <strong id="deleteDatasetName" class="delete-dataset-name"></strong>
+    <span id="deleteDatasetDetails" class="delete-dataset-details"></span>
+  </div>
+  <p id="deleteDialogError" class="delete-dialog-error" role="alert"></p>
+  <div class="delete-dialog-actions">
+    <button id="cancelDeleteBtn" type="button" class="btn-secondary" autofocus>Cancel</button>
+    <button id="confirmDeleteBtn" type="button" class="delete-confirm-btn">Delete dataset</button>
+  </div>
+</dialog>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="dashboard.js"></script>
+<script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+  <script src="../shared/notifications.js"></script>
+</body>
+</html>

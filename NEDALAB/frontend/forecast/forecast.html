@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Forecast</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="../shared/dark-mode.css">
+  <link rel="stylesheet" href="../shared/notifications.css">
+  <link rel="stylesheet" href="../shared/upload-widget.css">
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="page-shell">
+      <div class="page-header">
+        <div class="page-header-copy">
+          <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+          <div>
+            <h1>Forecasting</h1>
+            <p class="page-subtitle">Train models, compare accuracy, generate predictions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="split-grid grid grid-cols-3 gap-6">
+        <div class="card p-5 h-fit">
+          <h2 class="font-semibold text-stone-900 mb-4">Train a model</h2>
+          <form id="trainForm" class="space-y-4">
+            <div>
+              <label class="label">Dataset</label>
+              <select id="datasetSelect" class="input" required>
+                <option value="">Loading...</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Target column</label>
+              <select id="columnSelect" class="input" required disabled>
+                <option value="">— Select dataset first —</option>
+              </select>
+              <p id="columnHint" class="text-xs text-stone-500 mt-1">Numeric columns are recommended for forecasting.</p>
+            </div>
+            <div>
+              <label class="label">Model type</label>
+              <select id="modelType" class="input">
+                <option value="linear">Linear Regression</option>
+                <option value="moving_average">Moving Average (window=3)</option>
+                <option value="exponential_smoothing">Exponential Smoothing (α=0.3)</option>
+                <option value="polynomial">Polynomial Regression (deg=2)</option>
+                <option value="arima">ARIMA (1,1,1)</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Name (optional)</label>
+              <input id="modelName" placeholder="e.g. Sales Baseline" class="input" />
+            </div>
+            <button class="btn-primary w-full" id="trainBtn">Train model</button>
+          </form>
+        </div>
+
+        <div class="col-span-2 space-y-6">
+          <div class="card p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="font-semibold text-stone-900">Trained models</h2>
+              <button id="reportBtn" class="btn-ghost" title="Download comparison report">⬇ Comparison CSV</button>
+            </div>
+            <div id="modelList" class="space-y-2"></div>
+          </div>
+
+          <div class="card p-6" id="predictBox" style="display:none">
+            <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+              <h2 class="font-semibold text-stone-900">Forecast</h2>
+              <div class="flex items-center gap-2">
+                <label class="text-xs text-stone-600">Horizon</label>
+                <input id="horizon" type="number" min="1" max="365" value="6" class="input" style="width:80px" />
+                <button id="predictBtn" class="btn-primary">Predict</button>
+                <button id="exportBtn" class="btn-secondary" title="Download forecast as CSV">⬇ CSV</button>
+              </div>
+            </div>
+            <div id="chartWrap" style="display:none">
+              <canvas id="chart" height="90"></canvas>
+              <div id="predTable" class="mt-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="forecast.js"></script>
+  <script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+  <script src="../shared/notifications.js"></script>
+  <script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+

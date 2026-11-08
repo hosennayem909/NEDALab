@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>NEDA LAB — Data Operations</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/dark-mode.css">
+<link rel="stylesheet" href="../shared/notifications.css">
+<link rel="stylesheet" href="../shared/upload-widget.css">
+<style>
+.tab-btn { padding:8px 16px; border-bottom:2px solid transparent; color:#78716c;
+  font-size:13px; font-weight:500; cursor:pointer; background:none;
+  border-top:none; border-left:none; border-right:none; }
+.tab-btn.active { border-bottom-color:#047857; color:#047857; }
+.formula-input {
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+  padding: 10px 12px; border: 1px solid #d6d3d1; border-radius: 6px;
+  background: white; width: 100%;
+}
+.formula-input:focus { outline: none; border-color: #047857; box-shadow: 0 0 0 3px rgba(4,120,87,0.12); }
+body.dark .formula-input { background: #1c2028; border-color: #353a45; color: #f5f5f4; }
+.col-chip {
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
+  background: #ecfdf5; color: #065f46; font-size: 11px; font-weight: 500;
+  font-family: 'IBM Plex Mono', monospace; cursor: pointer;
+  border: 1px solid transparent; margin: 2px;
+}
+.col-chip:hover { border-color: #047857; }
+body.dark .col-chip { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="flex">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside class="app-sidebar w-64 border-r flex flex-col min-h-screen" style="background:#f4f1ea;border-color:#e7e5e4">
+    <div class="p-5">
+      <a href="../dashboard/dashboard.html" class="brand-lockup no-underline"><span class="brand-mark">N</span><span class="brand-name"><span class="brand-word">NEDA</span><span class="brand-accent">Lab</span></span></a>
+    </div>
+    <nav id="sidebarNav" class="px-3 flex-1"></nav>
+    <div class="p-5 border-t" style="border-color:#e7e5e4">
+      <p id="sideUserName" class="text-sm font-medium text-stone-800">—</p>
+      <p id="sideUserEmail" class="text-xs text-stone-500 truncate">—</p>
+      <button id="logoutBtn" class="mt-3 text-xs font-medium text-red-700 hover:text-red-800">Sign out →</button>
+    </div>
+  </aside>
+
+  <main class="app-main flex-1 p-8">
+    <div class="max-w-6xl">
+      <div class="flex items-center gap-3 mb-6">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <div>
+          <h1 class="text-2xl font-bold text-stone-900">Data Operations</h1>
+          <p class="text-sm text-stone-500">Create custom formulas & join datasets.</p>
+        </div>
+      </div>
+
+      <div class="border-b mb-6" style="border-color:#e7e5e4">
+        <button data-tab="formula" class="tab-btn active">🧮 Custom Formula</button>
+        <button data-tab="join" class="tab-btn">🔗 Join Datasets</button>
+      </div>
+
+      <div id="tabContent"></div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/api.js"></script>
+<script src="../shared/auth.js"></script>
+<script src="../shared/ui.js"></script>
+<script src="data-ops.js"></script>
+<script src="../shared/feature-registry.js"></script>
+  <script src="../shared/dark-mode.js"></script>
+<script src="../shared/notifications.js"></script>
+<script src="../shared/upload-widget.js"></script>
+</body>
+</html>
+
